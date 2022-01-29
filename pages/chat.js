@@ -22,7 +22,7 @@ export default function ChatPage() {
         };
 
         setListaDeMensagem([
-            listaDeMensagens,
+            mensagem,
             ...listaDeMensagens,
         ]);
         setMensagem('');
@@ -68,13 +68,13 @@ export default function ChatPage() {
 
                     {/* <MessageList mensagens={[]} /> */}
                     <MessageList mensagens={listaDeMensagens} />
-                    {/* {listaDeMensagens.map((mensagemAtual) => {
+                    {listaDeMensagens.map((mensagemAtual) => {
                         return (
                             <li key={mensagemAtual.id}>
                                 {mensagemAtual.de}: {mensagemAtual.texto}
                             </li>
                         )
-                    })} */}
+                    })}
 
                     <Box
                         as="form"
