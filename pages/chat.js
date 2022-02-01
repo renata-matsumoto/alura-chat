@@ -2,6 +2,13 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React from 'react';
 import appConfig from './config.json';
+import { createClient } from '@supabase/supabase-js';
+
+// Como fazer AJAX
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzY2ODcyMiwiZXhwIjoxOTU5MjQ0NzIyfQ.COCD_WagGd1jC-0-5DQ4dwY6CDU0HlNRtB7odnrlctw";
+const SUPABASE_URL = "https://igsaczosehnulpeltves.supabase.co";
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 
 export default function ChatPage() {
 
@@ -10,21 +17,44 @@ export default function ChatPage() {
     // )
 
     const [mensagem, setMensagem] = React.useState("");
-    const [listaDeMensagens, setListaDeMensagem] = React.useState([]);
+    const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
     // Sua lógica vai aqui
+
+    React.useEffect(() => {
+        supabaseClient
+            .from('mensagens')
+            .select('*')
+            .order("id", {ascending: false})
+            .then(({data}) => {
+                console.log('Dados da consulta:', data);
+                setListaDeMensagens(data);
+            });
+    }, []);
 
 
     function handleNovaMensagem(novaMensagem) {
         const mensagem = {
-            id: listaDeMensagens.length + 1,
-            de: 'renata_matsumoto',
+            // id: listaDeMensagens.length + 1,
+            de: 'renata-matsumoto',
             texto: novaMensagem,
         };
 
-        setListaDeMensagem([
-            mensagem,
-            ...listaDeMensagens,
-        ]);
+        supabaseClient
+            .from('mensagens')
+            .insert([
+                // Tem que ser um objeto com os mesmo campos que você escreveu no Supabase
+                mensagem
+            ])
+
+            .then(({ data }) => {
+                console.log("Criando mensagens:", data);
+                setListaDeMensagens([
+                    data[0],
+                    ...listaDeMensagens,
+                ]);
+            });
+
+      
         setMensagem('');
     }
     // ./Sua lógica vai aqui
@@ -68,13 +98,13 @@ export default function ChatPage() {
 
                     {/* <MessageList mensagens={[]} /> */}
                     <MessageList mensagens={listaDeMensagens} />
-                    {listaDeMensagens.map((mensagemAtual) => {
+                    {/* {listaDeMensagens.map((mensagemAtual) => {
                         return (
                             <li key={mensagemAtual.id}>
                                 {mensagemAtual.de}: {mensagemAtual.texto}
                             </li>
                         )
-                    })}
+                    })} */}
 
                     <Box
                         as="form"
@@ -176,11 +206,13 @@ function MessageList(props) {
                                     display: 'inline-block',
                                     marginRight: '8px',
                                 }}
-                                src={`https://github.com/renata-matsumoto.png`}
+                                src={`https://github.com/${mensagem.de}.png`}
                             />
+
                             <Text tag="strong">
                                 {mensagem.de}
                             </Text>
+
                             <Text
                                 styleSheet={{
                                     fontSize: '10px',
