@@ -6,7 +6,7 @@ import React from "react";
 
 function Titulo(props) {
     console.log(props);
-    const Tag = props.tag;
+    const Tag = props.tag || 'h1';
     return (
         <>
             <Tag>{props.children}</Tag>
@@ -22,6 +22,7 @@ function Titulo(props) {
     )
 }
 
+// Componente React
 // function HomePage() {
 //     // JSX
 //     // é uma forma de criar elementos para serem utilizadas como templates de aplicações React. O JSX necessita do "transpilador - copilador" - Babel
@@ -75,7 +76,7 @@ export default function PaginaInicial() {
                             infoevent.preventDefault();
                             console.log("Alguém submeteu");
                             // window.location.href = "/chat";
-                            roteamento.push('/chat');
+                            roteamento.push(`/chat?username=${username}`);
 
                         }}
                         styleSheet={{
