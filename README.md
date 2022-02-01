@@ -4,6 +4,8 @@ Marque esse projeto com uma estrela
 
 Siga as instruções das aulas e conteúdo extra da Imersão React Next.js
 
+Use o SupaBase para armazenar as informações
+
 Faça o deploy na Vercel e compartilhe
 
 Capa do Projeto
